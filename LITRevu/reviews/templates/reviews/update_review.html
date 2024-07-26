@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h2>Mise à jour d'une critique</h2>
+    <form method="post" enctype="multipart/form-data">
+        {{ edit_review.as_p }}
+        {{ photo_form.as_p }}
+        {% csrf_token %}
+        <button type="submit" >Publier</button>
+    </form>
+{% endblock content %}

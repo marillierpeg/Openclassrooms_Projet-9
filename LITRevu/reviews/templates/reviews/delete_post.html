@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>Supprimer la demande de review</h1>
+
+    <p>Êtes-vous sûr de vouloir supprimer la demande : {{ post.title }} ?</p>
+
+    <form action="" method="post">
+        {% csrf_token %}
+        <input type="submit" value="Supprimer">
+    </form>
+{% endblock content %}

@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+    <form method="post">
+        {{ edit_post.as_p }}
+        {% csrf_token %}
+        <button type="submit" >Publier</button>
+    </form>
+    <p><a href="{% url 'home' %}">Accueil</a></p>
+{% endblock content %}
