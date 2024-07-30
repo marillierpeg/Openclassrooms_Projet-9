@@ -4,7 +4,7 @@ from django.contrib.auth.views import (
     LoginView, LogoutView, PasswordChangeView, PasswordChangeDoneView)
 from django.conf import settings
 from django.conf.urls.static import static
-import reviews.views
+from reviews import views
 import authentication.views
 
 
@@ -25,15 +25,15 @@ urlpatterns = [
          ),
     path("profile-photo/upload/", authentication.views.upload_profile_photo,
          name="upload_profile_photo"),
-    path("reviews/create_review/", reviews.views.review_and_photo_upload, name="create_review"),
-    path("reviews/create_post/", reviews.views.post_upload, name="create_post"),
-    path("reviews/view_review/<int:review_id>/", reviews.views.view_review, name="view_review"),
-    path("reviews/view_post/<int:post_id>/", reviews.views.view_post, name="view_post"),
-    path("reviews/update_review/<int:review_id>/", reviews.views.update_review, name="update_review"),
-    path("reviews/update_post/<int:post_id>/", reviews.views.update_post, name="update_post"),
-    path("reviews/delete_review/<int:review_id>/", reviews.views.delete_review, name="delete_review"),
-    path("reviews/delete_post/<int:post_id>/", reviews.views.delete_post, name="delete_post"),
-    path("home/", reviews.views.home, name="home"),
+    path("reviews/create_review/", views.ViewReview.review_and_photo_upload, name="create_review"),
+    path("reviews/create_post/", views.ViewPost.post_upload, name="create_post"),
+    path("reviews/view_review/<int:review_id>/", views.ViewReview.view_review, name="view_review"),
+    path("reviews/view_post/<int:post_id>/", views.ViewPost.view_post, name="view_post"),
+    path("reviews/update_review/<int:review_id>/", views.ViewReview.update_review, name="update_review"),
+    path("reviews/update_post/<int:post_id>/", views.ViewPost.update_post, name="update_post"),
+    path("reviews/delete_review/<int:review_id>/", views.ViewReview.delete_review, name="delete_review"),
+    path("reviews/delete_post/<int:post_id>/", views.ViewPost.delete_post, name="delete_post"),
+    path("home/", views.ViewHome.home, name="home"),
 ]
 if settings.DEBUG:
     urlpatterns += static(

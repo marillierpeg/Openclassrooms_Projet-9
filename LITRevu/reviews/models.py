@@ -5,7 +5,7 @@ from PIL import Image
 
 
 class Photo(models.Model):
-    image = models.ImageField()
+    image = models.ImageField(blank=True)
     caption = models.CharField(max_length=128, blank=True)
     uploader = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     date_created = models.DateTimeField(auto_now_add=True)
@@ -30,11 +30,11 @@ class Post(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return {self.title}
+        return self.title
 
 
 class Review(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="Critique", null=True)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="Critique", null=True, blank=True)
     photo = models.ForeignKey(Photo, null=True, on_delete=models.SET_NULL, blank=True)
     title = models.CharField(max_length=128)
     description = models.CharField(max_length=5000)
@@ -43,7 +43,7 @@ class Review(models.Model):
     rating = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
 
     def __str__(self):
-        return {self.title}
+        return self.title
 
     def checking_review(self, user):
         return Review.objects.filter(user=user, post_id=self.post_id).exists()
