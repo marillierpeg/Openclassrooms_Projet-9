@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.conf import settings
 from django.contrib.auth import login
+from django.contrib.auth.decorators import login_required
 from . import forms
 
 
@@ -16,6 +17,7 @@ def signup_page(request):
     return render(request, 'authentication/signup.html', context={'form': form})
 
 
+@login_required
 def upload_profile_photo(request):
     form = forms.UploadProfilePhotoForm(instance=request.user)
     if request.method == 'POST':

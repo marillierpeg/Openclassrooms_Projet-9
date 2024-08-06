@@ -1,7 +1,8 @@
 from django.contrib import admin
 from django.urls import path
 from django.contrib.auth.views import (
-    LoginView, LogoutView, PasswordChangeView, PasswordChangeDoneView)
+    LoginView, LogoutView, PasswordChangeView, PasswordChangeDoneView
+)
 from django.conf import settings
 from django.conf.urls.static import static
 from reviews import views
@@ -33,6 +34,7 @@ urlpatterns = [
     path("reviews/update_post/<int:post_id>/", views.ViewPost.update_post, name="update_post"),
     path("reviews/delete_review/<int:review_id>/", views.ViewReview.delete_review, name="delete_review"),
     path("reviews/delete_post/<int:post_id>/", views.ViewPost.delete_post, name="delete_post"),
+    path("follow-users/", views.ViewFollowedUser.follow_users, name="follow_users"),
     path("home/", views.ViewHome.home, name="home"),
 ]
 if settings.DEBUG:

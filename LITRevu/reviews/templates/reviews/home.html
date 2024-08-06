@@ -1,3 +1,4 @@
+{% load static %}
 {% extends 'base.html' %}
 {% block content %}
     <h2>Reviews</h2>
@@ -6,7 +7,8 @@
             <div>
                 <a href="{% url 'view_review' review.id %}">
                     <h4>Review de : {{ review.title }}</h4>
-                    <img src="{{ review.photo.image.url }}">
+                    <p>Créé par : {{ review.author }}</p>
+                    <img src="{{ review.photo.url }}">
                 </a>
             </div>
         {% endfor %}

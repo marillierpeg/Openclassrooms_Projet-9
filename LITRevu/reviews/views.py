@@ -1,65 +1,58 @@
 from django.shortcuts import get_object_or_404
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.views import View
-from . import forms, models
+from .models import Review, Post
+from .forms import ReviewForm, PostForm, FollowedUserForm
 
 
-class ViewReview(LoginRequiredMixin, View):
+@login_required
+class ViewReview(View):
 
     def review_and_photo_upload(request):
-        review_form = forms.ReviewForm()
-        photo_form = forms.PhotoForm()
+        review_form = ReviewForm()
         if request.method == "POST":
-            review_form = forms.ReviewForm(request.POST)
-            photo_form = forms.PhotoForm(request.POST, request.FILES)
-            if all([review_form.is_valid(), photo_form.is_valid()]):
-                photo = photo_form.save(commit=False)
-                photo.uploader = request.user
-                photo.save()
+            review_form = ReviewForm(request.POST, request.FILES)
+            if review_form.is_valid():
                 review = review_form.save(commit=False)
                 review.author = request.user
-                review.photo = photo
                 review.save()
                 return redirect("home")
         context = {
             "review_form": review_form,
-            "photo_form": photo_form,
         }
         return render(request, "reviews/create_review.html", context=context)
 
     def view_review(request, review_id):
-        review = get_object_or_404(models.Review, id=review_id)
+        review = get_object_or_404(Review, id=review_id)
         return render(request, "reviews/view_review.html", {"review": review})
 
     def update_review(request, review_id):
-        review = get_object_or_404(models.Review, id=review_id)
-        edit_review = forms.ReviewForm(instance=review)
-        edit_photo = forms.PhotoForm(instance=review)
+        review = get_object_or_404(Review, id=review_id)
+        edit_review = ReviewForm(instance=review)
         if request.method == "POST":
-            edit_review = forms.ReviewForm(request.POST, instance=review)
-            edit_photo = forms.PhotoForm(request.POST, request.FILES, instance=review)
-            if edit_review.is_valid() and edit_photo.is_valid():
+            edit_review = ReviewForm(request.POST, request.FILES, instance=review)
+            if edit_review.is_valid():
                 edit_review.save()
-                edit_photo.save()
             return redirect("view_review", review.id)
-        context = {"edit_review": edit_review, "edit_photo": edit_photo}
+        context = {"edit_review": edit_review}
         return render(request, "reviews/update_review.html", context=context)
 
     def delete_review(request, review_id):
-        review = get_object_or_404(models.Review, id=review_id)
+        review = get_object_or_404(Review, id=review_id)
         if request.method == "POST":
             review.delete()
             return redirect("home")
         return render(request, "reviews/delete_review.html", {"review": review})
 
 
-class ViewPost(LoginRequiredMixin, View):
+@login_required
+class ViewPost(View):
 
     def post_upload(request):
-        post_form = forms.PostForm()
+        post_form = PostForm()
         if request.method == "POST":
-            post_form = forms.PostForm(request.POST)
+            post_form = PostForm(request.POST)
             if (post_form.is_valid()):
                 post = post_form.save(commit=False)
                 post.author = request.user
@@ -69,14 +62,14 @@ class ViewPost(LoginRequiredMixin, View):
         return render(request, "reviews/create_post.html", context=context)
 
     def view_post(request, post_id):
-        post = get_object_or_404(models.Post, id=post_id)
+        post = get_object_or_404(Post, id=post_id)
         return render(request, "reviews/view_post.html", {"post": post})
 
     def update_post(request, post_id):
-        post = get_object_or_404(models.Post, id=post_id)
-        edit_post = forms.PostForm(instance=post)
+        post = get_object_or_404(Post, id=post_id)
+        edit_post = PostForm(instance=post)
         if request.method == "POST":
-            edit_post = forms.PostForm(request.POST, instance=post)
+            edit_post = PostForm(request.POST, instance=post)
             if edit_post.is_valid():
                 edit_post.save()
                 return redirect("view_post", post.id)
@@ -84,17 +77,31 @@ class ViewPost(LoginRequiredMixin, View):
         return render(request, "reviews/update_post.html", context=context)
 
     def delete_post(request, post_id):
-        post = models.Post.objects.get(id=post_id)
+        post = Post.objects.get(id=post_id)
         if request.method == "POST":
             post.delete()
             return redirect("home")
         return render(request, "reviews/delete_post.html", {"post": post})
 
 
-class ViewHome(LoginRequiredMixin, View):
+@login_required
+class ViewHome(View):
 
     def home(request):
-        reviews = models.Review.objects.all()
-        posts = models.Post.objects.all()
+        reviews = Review.objects.all()
+        posts = Post.objects.all()
         return render(
             request, "reviews/home.html", context={"reviews": reviews, "posts": posts})
+
+
+@login_required
+class ViewFollowedUser(View):
+
+    def follow_users(request):
+        form = FollowedUserForm(instance=request.user)
+        if request.method == "POST":
+            form = FollowedUserForm(request.POST, instance=request.user)
+            if form.is_valid():
+                form.save()
+                return redirect("home")
+        return render(request, "reviews/follow_users.html", context={"form": form})

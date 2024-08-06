@@ -1,5 +1,5 @@
-{% load static %}
 <html>
+{% load static %}
     <head>
         <title>LitRevu</title>
         <link rel="stylesheet" href="{% static 'style.css' %}">
@@ -13,14 +13,19 @@
                 {% else %}
                     <img class="avatar" src="{% static 'pictures/default_profile.png'%}">
                 {% endif %}
-                <p><a href="{% url 'home' %}">Accueil</a></p>
+                <h3>Mon compte</h3>
                 <p><a href="{% url 'password_change' %}">Changer le mot de passe</a></p>
                 <p><a href="{% url 'upload_profile_photo' %}">Changer votre photo de profil</a></p>
+                <h3>Reviews / Posts</h3>
                 <p><a href="{% url 'create_review' %}">Écrire une review</a></p>
                 <p><a href="{% url 'create_post' %}">Demander une review</a></p>
+                <h3>Follows</h3>
+                <p><a href="{% url 'follow_users' %}">Suivre des utilisateurs</a></p>
+                <h3></h3>
+                <p><a href="{% url 'home' %}">Accueil</a></p>
                 <form action="{% url 'logout' %}" method="post">
                     {% csrf_token %}
-                    <button type="submit">Log Out</button>
+                    <button id="btn" type="submit">Log Out</button>
                 </form>
             {% endif %}
         </div>

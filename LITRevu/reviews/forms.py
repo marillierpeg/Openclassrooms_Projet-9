@@ -1,12 +1,7 @@
 from django import forms
-from . import models
 from django.core.validators import MinValueValidator, MaxValueValidator
-
-
-class PhotoForm(forms.ModelForm):
-    class Meta:
-        model = models.Photo
-        fields = ["image", "caption"]
+from django.contrib.auth import get_user_model
+from . import models
 
 
 class ReviewForm(forms.ModelForm):
@@ -22,9 +17,14 @@ class ReviewForm(forms.ModelForm):
         attrs={"id": "description", "placeholder": "Votre commentaire"}
         ), required=True, error_messages={"required": "Veuillez saisir une description."})
 
+    photo = forms.ImageField(label="Image", required=False)
+    image_description = forms.CharField(
+        label="Description de l'image", required=False
+    )
+
     class Meta:
         model = models.Review
-        fields = ["title", "description", "rating"]
+        fields = ["title", "description", "rating", "photo"]
 
 
 class PostForm(forms.ModelForm):
@@ -40,3 +40,9 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = models.Post
         fields = ["title", "description"]
+
+
+class FollowedUserForm(forms.ModelForm):
+    class Meta:
+        model = get_user_model()
+        fields = ["follow"]

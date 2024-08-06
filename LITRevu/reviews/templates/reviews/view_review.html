@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
     <h2>{{ review.title }}</h2>
-    <img src="{{ review.photo.image.url }}">
+    <img src="{{ review.photo.url }}">
     <p>Avis :{{ review.description }}</p>
     <p>Note : {{ review.rating }} /5</p>
     <a href="{% url 'update_review' review.id %}">Modifier</a>
