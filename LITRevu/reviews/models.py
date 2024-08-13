@@ -29,6 +29,7 @@ class Review(models.Model):
     IMAGE_MAX_SIZE = (200, 200)
 
     def resize_image(self):
+        """Méthode qui redimensionne les photos publiées avec les reviews"""
         photo = Image.open(self.photo)
         photo.thumbnail(self.IMAGE_MAX_SIZE)
         photo.save(self.photo.path)
@@ -39,3 +40,27 @@ class Review(models.Model):
 
     def checking_review(self, user):
         return Review.objects.filter(user=user, post_id=self.post_id).exists()
+
+
+class PostReview(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    review = models.ForeignKey(Review, on_delete=models.CASCADE)
+
+
+class UserFollows(models.Model):
+    """Modèle pour représenter la relation de suivi entre utilisateurs."""
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="following")
+    followed_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="followed_by")
+    blocked = models.BooleanField(default=False)
+
+    class Meta:
+        unique_together = ("user", "followed_user")
+
+    def unfollow(self):
+        """Met fin au suivi entre utilisateurs."""
+        self.delete()
+
+    @classmethod
+    def is_following(cls, user, followed_user):
+        """Vérifie si un utilisateur suit un autre utilisateur."""
+        return cls.objects.filter(user=user, followed_user=followed_user).exists()

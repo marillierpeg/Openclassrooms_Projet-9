@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div>
+        <h1>Utilisateurs que vous suivez</h1>
+        <ul>
+            {% for followed_user in followed_users %}
+            <li>
+                <span>{{ followed_user.followed_user.username }}</span>
+                <form action="{% url 'unfollow_user' %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="followed_user_id" value="{{ followed_user.id }}">
+                    <input type="submit" value="Se désabonner">
+                </form>
+            </li>
+        </ul>
+    </div>
+        {% endfor %}
+{% endblock content %}

@@ -1,10 +1,15 @@
 {% extends 'base.html' %}
 {% block content %}
-    <h1>Suivre des utilisateurs</h1>
-
-    <form method="post">
+    <h1 class="active"> Utilisateurs à suivre </h1>
+    <form method="post" action="{% url 'follow_users' %}">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Confirmer</button>
+        <div>
+            <label for="follows">Nom d'utilisateur à suivre :</label>
+            <input type="text" id="follows" name="follows" placeholder="Utilisateur que vous souhaitez suivre">
+            {% if form.follows.errors %}
+                <p>{{ form.follows.errors }}</p>
+            {% endif %}
+        </div>
+        <input type="submit" value="Suivre">
     </form>
 {% endblock content %}
