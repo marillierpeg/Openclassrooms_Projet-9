@@ -4,7 +4,11 @@ from django.contrib.auth import get_user_model
 from . import models
 
 
+User = get_user_model()
+
+
 class ReviewForm(forms.ModelForm):
+    """Formulaire pour la création d'une review"""
     title = forms.CharField(label="Titre de la critique", widget=forms.TextInput(
         attrs={"id": "title", "placeholder": "Titre de la critique"}
         ), required=True, error_messages={"required": "Veuillez saisir un titre."})
@@ -28,6 +32,7 @@ class ReviewForm(forms.ModelForm):
 
 
 class PostForm(forms.ModelForm):
+    """Formulaire pour la création d'un post"""
     title = forms.CharField(label="Titre de la demande", widget=forms.TextInput(
         attrs={"id": "title"}
         ), required=True, error_messages={"required": "Veuillez saisir un titre."})
@@ -43,6 +48,23 @@ class PostForm(forms.ModelForm):
 
 
 class FollowedUserForm(forms.ModelForm):
+    """Formulaire de suivi d'un utilisateur"""
+
+    follows = forms.CharField(
+        label="Nom d'utilisateur à suivre",
+        max_length=128,
+        widget=forms.TextInput(
+            attrs={"placeholder": "Entrez le nom d'utilisateur à suivre"}
+        ),
+    )
+
     class Meta:
-        model = get_user_model()
-        fields = ["follow"]
+        model = User
+        fields = ["follows"]
+
+    def clean_datas(self):
+        """Vérifie si l'utilisateur à suivre existe."""
+        follows = self.cleaned_data["follows"]
+        if not User.objects.filter(username=follows):
+            raise forms.ValidationError("Cet utilisateur n'est pas reconnu!")
+        return follows

@@ -1,13 +1,16 @@
-from django.shortcuts import get_object_or_404
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
-from django.views import View
-from .models import Review, Post
+# from authentication.models import User
+from .models import Review, Post, UsersFollowing
 from .forms import ReviewForm, PostForm, FollowedUserForm
 
+from django.shortcuts import get_object_or_404
+from django.shortcuts import render, redirect
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import messages
+from django.views import View
+from authentication.models import User
 
-@login_required
-class ViewReview(View):
+
+class ViewReview(View, LoginRequiredMixin):
 
     def review_and_photo_upload(request):
         review_form = ReviewForm()
@@ -46,8 +49,27 @@ class ViewReview(View):
         return render(request, "reviews/delete_review.html", {"review": review})
 
 
-@login_required
-class ViewPost(View):
+class ViewPostReview(View, LoginRequiredMixin):
+
+    def get_post_review(request, post_id):
+        post= get_object_or_404(Post, id=post_id)
+        post_review_form = ReviewForm(instance=post)
+        if request.method == "POST":
+            post_review_form = ReviewForm(request.POST, request.FILES, instance=post)
+            if post_review_form.is_valid():
+
+                review = post_review_form.save()
+                review.author = request.user
+                review.post = post
+                review.save()
+                return redirect("home")
+        else:
+            post_review_form = ReviewForm()
+        context = {"post_review_form": post_review_form, "post_review": post}
+        return render(request, "reviews/create_review_post.html", context=context)
+
+
+class ViewPost(View, LoginRequiredMixin):
 
     def post_upload(request):
         post_form = PostForm()
@@ -84,24 +106,72 @@ class ViewPost(View):
         return render(request, "reviews/delete_post.html", {"post": post})
 
 
-@login_required
-class ViewHome(View):
-
-    def home(request):
-        reviews = Review.objects.all()
-        posts = Post.objects.all()
-        return render(
-            request, "reviews/home.html", context={"reviews": reviews, "posts": posts})
-
-
-@login_required
-class ViewFollowedUser(View):
+class ViewFollowing(LoginRequiredMixin, View):
 
     def follow_users(request):
-        form = FollowedUserForm(instance=request.user)
-        if request.method == "POST":
-            form = FollowedUserForm(request.POST, instance=request.user)
-            if form.is_valid():
-                form.save()
-                return redirect("home")
-        return render(request, "reviews/follow_users.html", context={"form": form})
+        """ Gère le formulaire pour suivre de nouveaux utilisateurs."""
+        form = FollowedUserForm(request.POST)
+        followed_users = UsersFollowing.objects.filter(user=request.user)
+        if form.is_valid():
+            # Récupérer les utilisateurs sélectionnés dans le formulaire
+            selected_users = form.cleaned_data['follows']
+            try:
+                followed_users = User.objects.get(username=selected_users)
+                if followed_users != request.user:
+                    UsersFollowing.objects.get_or_create(user=request.user, followers=followed_users)
+                    return redirect("followed_users")
+                else:
+                    messages.error(request, "Vous ne pouvez pas vous abonner à votre propre compte")
+            except User.DoesNotExist:
+                # Gérer le cas où l'utilisateur sélectionné n'existe pas
+                messages.error(request, "Cet utilisateur n'existe pas.")
+        context = {
+            "form": form,
+            "followed_users": followed_users
+        }
+        return render(request, "reviews/follow_users.html", context=context)
+
+    def display_followers(request):
+        """Affiche les utilisateurs suivis"""
+        # Récupérer les utilisateurs que vous suivez
+        followed_users = UsersFollowing.objects.filter(user=request.user)
+
+        # Récupérer les utilisateurs qui vous suivent
+        users_following = UsersFollowing.objects.filter(followers=request.user)
+
+        form = FollowedUserForm()
+
+        context = {
+            "form": form,
+            "followed_users": followed_users,
+            "users_following": users_following,
+        }
+        return render(request, "reviews/followed_users.html", context=context)
+
+
+class ViewUnfollow(LoginRequiredMixin, View):
+
+    def post(self, request):
+        user_to_unfollow_id = request.POST.get('followers_id')
+        try:
+            follow = UsersFollowing.objects.get(user=request.user, followers_id=user_to_unfollow_id)
+            follow.delete()
+            messages.success(request, "Vous ne suivez plus cet utilisateur.!!!!!!!!!!!!!!!!!!!!!!")
+        except UsersFollowing.DoesNotExist:
+            messages.error(request, "L'abonnement n'existe pas.§§§§§§§§§§§§§§§§§§§§§§§§§§")
+        except Exception:
+            messages.error(request, "Une erreur inattendue s'est produite. Veuillez réessayer plus tard.")
+        return redirect('followed_users')
+
+
+class ViewHome(LoginRequiredMixin, View):
+
+    def home(request):
+
+        followed = UsersFollowing.objects.filter(user=request.user)
+        followed_users_ids = followed.values_list("followers_id", flat=True)
+        reviews = Review.objects.filter(author__in=followed_users_ids)
+        posts = Post.objects.all()
+        return render(
+            request, "reviews/home.html", context={"reviews": reviews, "posts": posts}
+        )

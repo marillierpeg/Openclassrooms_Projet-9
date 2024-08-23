@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h2>{{ post.title }}</h2>
+    <p>{{ post.description }}</p>
+
+    <h2>Review réponse</h2>
+    <img src="{{ review.photo.url }}">
+    <p>Avis :{{ review.description }}</p>
+    <p>Note : {{ review.rating }} /5</p>
+    <a href="{% url 'update_review' review.id %}">Modifier</a>
+    <a href="{% url 'delete_review' review.id %}">Supprimer</a>
+
+    <p><a href="{% url 'home' %}">Accueil</a></p>
+{% endblock content %}

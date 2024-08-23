@@ -5,6 +5,13 @@
         <link rel="stylesheet" href="{% static 'style.css' %}">
     </head>
     <body>
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
         <div class="sidebar">
             {% if user.is_authenticated %}
                 <h1>Salut, {{ user }} !</h1>
@@ -13,6 +20,7 @@
                 {% else %}
                     <img class="avatar" src="{% static 'pictures/default_profile.png'%}">
                 {% endif %}
+                <p><a href="{% url 'home' %}">Mon accueil</a></p>
                 <h3>Mon compte</h3>
                 <p><a href="{% url 'password_change' %}">Changer le mot de passe</a></p>
                 <p><a href="{% url 'upload_profile_photo' %}">Changer votre photo de profil</a></p>
@@ -21,8 +29,8 @@
                 <p><a href="{% url 'create_post' %}">Demander une review</a></p>
                 <h3>Follows</h3>
                 <p><a href="{% url 'follow_users' %}">Suivre des utilisateurs</a></p>
+                <p><a href="{% url 'followed_users' %}">Utilisateurs que vous suivez</a></p>
                 <h3></h3>
-                <p><a href="{% url 'home' %}">Accueil</a></p>
                 <form action="{% url 'logout' %}" method="post">
                     {% csrf_token %}
                     <button id="btn" type="submit">Log Out</button>

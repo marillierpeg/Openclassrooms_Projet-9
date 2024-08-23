@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>{{ post.title }}</h2>
+<p>{{ post.description }}</p>
+
+<p>{{post.review.title}}</p>
+
+<h2>Répondre avec une review</h2>
+<form method="post" enctype="multipart/form-data">
+        {{ post_review_form.as_p }}
+        {% csrf_token %}
+        <button type="submit" >Publier</button>
+    </form>
+{% endblock content %}

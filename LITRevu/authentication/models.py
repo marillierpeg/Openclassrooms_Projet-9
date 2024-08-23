@@ -18,4 +18,3 @@ class User(AbstractUser):
     last_login = models.DateTimeField(auto_now=True, null=True)
     groups = models.ManyToManyField(Group, related_name="user_auth_groups")
     user_permissions = models.ManyToManyField(Permission, related_name="user_auth_permissions")
-    follow = models.ManyToManyField("self", symmetrical=False)

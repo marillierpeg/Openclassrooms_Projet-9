@@ -3,7 +3,6 @@
     <h2>Mise à jour d'une review</h2>
     <form method="post" enctype="multipart/form-data">
         {{ edit_review.as_p }}
-        {{ edit_photo.as_p }}
         {% csrf_token %}
         <button type="submit" >Publier</button>
     </form>
