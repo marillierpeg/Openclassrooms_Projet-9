@@ -34,16 +34,10 @@ urlpatterns = [
     path("reviews/update_post/<int:post_id>/", views.ViewPost.update_post, name="update_post"),
     path("reviews/delete_review/<int:review_id>/", views.ViewReview.delete_review, name="delete_review"),
     path("reviews/delete_post/<int:post_id>/", views.ViewPost.delete_post, name="delete_post"),
-<<<<<<< HEAD
     path("reviews/create_review_post/<int:post_id>/", views.ViewPostReview.get_post_review, name="create_review_post"),
     path("follow_users/", views.ViewFollowing.follow_users, name="follow_users"),
     path("followed_users/", views.ViewFollowing.display_followers, name="followed_users"),
     path("unfollow/", views.ViewUnfollow.as_view(), name="unfollow_user"),
-=======
-    path("reviews/create_review_post/<int:post_id>/", views.ViewPostReview.answer_post, name="create_review_post"),
-    path("follow_users/", views.FollowingView.follow_users, name="follow_users"),
-    path("followed_users", views.FollowingView.display_follows, name="followed_users"),
->>>>>>> a46d6674188a9112ac89a533752d5f38ed7cd696
     path("home/", views.ViewHome.home, name="home"),
 ]
 if settings.DEBUG:

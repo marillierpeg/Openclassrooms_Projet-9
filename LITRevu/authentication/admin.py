@@ -1,6 +1,6 @@
 from django.contrib import admin
 from authentication.models import User
-from reviews.models import Post, Review, UserFollows
+from reviews.models import Post, Review, UsersFollowing
 
 
 class PostAdmin(admin.TabularInline):
@@ -17,12 +17,12 @@ class ReviewAdmin(admin.TabularInline):
     model = Review
 
 
-class UserFollows(admin.TabularInline):
+class UsersFollowingAdmin(admin.TabularInline):
     """Interface en ligne pour l'administration des suivis d'utilisateurs.
     Cette classe fournit une interface en ligne pour l'administration des suivis d'utilisateurs.
     Elle permet d'afficher et de gérer les relations de suivi entre les utilisateurs
     dans le panneau d'administration Django."""
-    model = UserFollows
+    model = UsersFollowing
 
 
 class UserAdmin(admin.ModelAdmin):

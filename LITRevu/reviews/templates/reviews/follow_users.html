@@ -1,23 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
-<<<<<<< HEAD
     <h1> Utilisateurs à suivre </h1>
     <form method="post">
         {{ form.as_p }}
         {% csrf_token %}
         <button type="submit" >Suivre</button>
-=======
-    <h1 class="active"> Utilisateurs à suivre </h1>
-    <form method="post" action="{% url 'follow_users' %}">
-        {% csrf_token %}
-        <div>
-            <label for="follows">Nom d'utilisateur à suivre :</label>
-            <input type="text" id="follows" name="follows" placeholder="Utilisateur que vous souhaitez suivre">
-            {% if form.follows.errors %}
-                <p>{{ form.follows.errors }}</p>
-            {% endif %}
-        </div>
-        <input type="submit" value="Suivre">
->>>>>>> a46d6674188a9112ac89a533752d5f38ed7cd696
     </form>
 {% endblock content %}
