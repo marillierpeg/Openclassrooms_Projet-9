@@ -1,6 +1,18 @@
+<<<<<<< HEAD
 # from authentication.models import User
 from .models import Review, Post, UsersFollowing
 from .forms import ReviewForm, PostForm, FollowedUserForm
+=======
+from authentication.models import User
+from .models import Review, Post, UserFollows
+from .forms import ReviewForm, PostForm, FollowedUserForm, PostReviewForm
+
+from django.shortcuts import get_object_or_404
+from django.shortcuts import render, redirect
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import messages
+from django.views import View
+>>>>>>> a46d6674188a9112ac89a533752d5f38ed7cd696
 
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render, redirect
@@ -9,7 +21,10 @@ from django.contrib import messages
 from django.views import View
 from authentication.models import User
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> a46d6674188a9112ac89a533752d5f38ed7cd696
 class ViewReview(View, LoginRequiredMixin):
 
     def review_and_photo_upload(request):
@@ -51,6 +66,7 @@ class ViewReview(View, LoginRequiredMixin):
 
 class ViewPostReview(View, LoginRequiredMixin):
 
+<<<<<<< HEAD
     def get_post_review(request, post_id):
         post= get_object_or_404(Post, id=post_id)
         post_review_form = ReviewForm(instance=post)
@@ -66,6 +82,25 @@ class ViewPostReview(View, LoginRequiredMixin):
         else:
             post_review_form = ReviewForm()
         context = {"post_review_form": post_review_form, "post_review": post}
+=======
+    def answer_post(request, post_id):
+        post = get_object_or_404(Post, id=post_id)
+        if request.method == "POST":
+            form = PostReviewForm(request.POST, request.FILES, instance=post)
+            if form.is_valid():
+                # Vérifie si l'utilisateur à déjà créer une review sur un post
+                if not Review.objects.filter(author=request.user, post=post).exists():
+                    review = form.save(commit=False)
+                    review.author = request.user
+                    review.post = post
+                    review.save()
+                    return redirect("home")
+                else:
+                    messages.error(request, "Une review a déjà été publiée en réponse à ce post")
+        else:
+            form = PostReviewForm()
+        context = {"post_review_form": form, "post": post}
+>>>>>>> a46d6674188a9112ac89a533752d5f38ed7cd696
         return render(request, "reviews/create_review_post.html", context=context)
 
 
@@ -106,6 +141,7 @@ class ViewPost(View, LoginRequiredMixin):
         return render(request, "reviews/delete_post.html", {"post": post})
 
 
+<<<<<<< HEAD
 class ViewFollowing(LoginRequiredMixin, View):
 
     def follow_users(request):
@@ -125,11 +161,61 @@ class ViewFollowing(LoginRequiredMixin, View):
             except User.DoesNotExist:
                 # Gérer le cas où l'utilisateur sélectionné n'existe pas
                 messages.error(request, "Cet utilisateur n'existe pas.")
+=======
+class ViewHome(View, LoginRequiredMixin):
+
+    def home(request):
+        reviews = Review.objects.all()
+        posts = Post.objects.all()
+        following = UserFollows.objects.all()
+        return render(
+            request, "reviews/home.html", context={"reviews": reviews, "posts": posts, "follows": following})
+
+
+class FollowingView(LoginRequiredMixin, View):
+    """Cette vue gère l'affichage et la gestion des utilisateurs suivis par l'utilisateur connecté."""
+    def display_follows(request):
+        """Affiche les utilisateurs déjà suivis."""
+        # Récupérer les utilisateurs que vous suivez
+        followed_users = UserFollows.objects.filter(user=request.user)
+
+        # Récupérer les utilisateurs qui vous suivent
+        users_following = UserFollows.objects.filter(followed_user=request.user)
+
+        form = FollowedUserForm()
+
+        context = {
+            "form": form,
+            "followed_users": followed_users,
+            "users_following": users_following,
+        }
+        return render(request, "reviews/followed_users.html", context=context)
+
+    def follow_users(request):
+        """ Traite le formulaire pour suivre de nouveaux utilisateurs."""
+        form = FollowedUserForm(request.POST)
+        followed_users = UserFollows.objects.filter(user=request.user)
+
+        if form.is_valid():
+            follows_username = form.cleaned_data["follows"]
+            try:
+                followed_user = User.objects.get(username=follows_username)
+                if followed_user != request.user:
+                    # Enregistrer la relation de suivi dans un seul sens
+                    UserFollows.objects.get_or_create(user=request.user, followed_user=followed_user)
+                    return redirect("followed_users")
+                else:
+                    messages.error(request, "Vous ne pouvez pas vous abonner à vous-même.")
+            except User.DoesNotExist:
+                messages.error(request, "Utilisateur inconnu.")
+
+>>>>>>> a46d6674188a9112ac89a533752d5f38ed7cd696
         context = {
             "form": form,
             "followed_users": followed_users
         }
         return render(request, "reviews/follow_users.html", context=context)
+<<<<<<< HEAD
 
     def display_followers(request):
         """Affiche les utilisateurs suivis"""
@@ -175,3 +261,5 @@ class ViewHome(LoginRequiredMixin, View):
         return render(
             request, "reviews/home.html", context={"reviews": reviews, "posts": posts}
         )
+=======
+>>>>>>> a46d6674188a9112ac89a533752d5f38ed7cd696

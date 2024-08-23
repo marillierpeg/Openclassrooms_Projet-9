@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
+<<<<<<< HEAD
     <h1>Utilisateurs suivis</h1>
     <ul>
         {% for followed_user in followed_users %}
@@ -18,4 +19,21 @@
             <li>{{ user_following.user.username }}</li>
         {% endfor %}
     </ul>
+=======
+    <div>
+        <h1>Utilisateurs que vous suivez</h1>
+        <ul>
+            {% for followed_user in followed_users %}
+            <li>
+                <span>{{ followed_user.followed_user.username }}</span>
+                <form action="{% url 'unfollow_user' %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="followed_user_id" value="{{ followed_user.id }}">
+                    <input type="submit" value="Se désabonner">
+                </form>
+            </li>
+        </ul>
+    </div>
+        {% endfor %}
+>>>>>>> a46d6674188a9112ac89a533752d5f38ed7cd696
 {% endblock content %}

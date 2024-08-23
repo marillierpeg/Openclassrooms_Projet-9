@@ -6,9 +6,9 @@
         {% for review in reviews %}
             <div>
                 <a href="{% url 'view_review' review.id %}">
+                    <img src="{{ review.photo.url }}">
                     <h4>Review de : {{ review.title }}</h4>
                     <p>Créé par : {{ review.author }}</p>
-                    <img src="{{ review.photo.url }}">
                 </a>
             </div>
         {% endfor %}

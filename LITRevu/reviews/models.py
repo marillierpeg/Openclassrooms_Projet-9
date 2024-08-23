@@ -29,6 +29,7 @@ class Review(models.Model):
         self.resize_image()
 
     def checking_review(self, user):
+<<<<<<< HEAD
         return Review.objects.filter(author=user, post_id=self.post_id).exists()
 
 
@@ -42,6 +43,9 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+=======
+        return Review.objects.filter(user=user, post_id=self.post_id).exists()
+>>>>>>> a46d6674188a9112ac89a533752d5f38ed7cd696
 
 
 class PostReview(models.Model):
@@ -49,6 +53,7 @@ class PostReview(models.Model):
     review = models.ForeignKey(Review, on_delete=models.CASCADE)
 
 
+<<<<<<< HEAD
 class UsersFollowing(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="following")
     followers = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="followers")
@@ -65,3 +70,22 @@ class UsersFollowing(models.Model):
 
     def __str__(self):
         f"{self.user} suit {self.followers}"
+=======
+class UserFollows(models.Model):
+    """Modèle pour représenter la relation de suivi entre utilisateurs."""
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="following")
+    followed_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="followed_by")
+    blocked = models.BooleanField(default=False)
+
+    class Meta:
+        unique_together = ("user", "followed_user")
+
+    def unfollow(self):
+        """Met fin au suivi entre utilisateurs."""
+        self.delete()
+
+    @classmethod
+    def is_following(cls, user, followed_user):
+        """Vérifie si un utilisateur suit un autre utilisateur."""
+        return cls.objects.filter(user=user, followed_user=followed_user).exists()
+>>>>>>> a46d6674188a9112ac89a533752d5f38ed7cd696
