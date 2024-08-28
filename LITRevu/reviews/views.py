@@ -1,13 +1,13 @@
-# from authentication.models import User
-from .models import Review, Post, UsersFollowing
+from .models import Review, Post, UsersFollowing, PostReview
 from .forms import ReviewForm, PostForm, FollowedUserForm
+from authentication.models import User
 
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
+from django.db.models import Q, OuterRef, Subquery
 from django.views import View
-from authentication.models import User
 
 
 class ViewReview(View, LoginRequiredMixin):
@@ -51,22 +51,29 @@ class ViewReview(View, LoginRequiredMixin):
 
 class ViewPostReview(View, LoginRequiredMixin):
 
-    def get_post_review(request, post_id):
+    def create_review_from_post(request, post_id):
         post = get_object_or_404(Post, id=post_id)
-        post_review_form = ReviewForm(instance=post)
-        if request.method == "POST":
-            post_review_form = ReviewForm(request.POST, request.FILES, instance=post)
-            if post_review_form.is_valid():
+        initial_data = {'post': post}
+        review_form = ReviewForm(request.POST or None, initial=initial_data)
+        if request.method == "POST" and review_form.is_valid():
+            review = review_form.save(commit=False)
+            review.post = post
+            review.author = request.user
+            review.save()
+            return redirect('home')
+        return render(
+            request,
+            template_name='reviews/create_post_review.html',
+            context={
+                'post': post,
+                'review_form': review_form,
+            }
+        )
 
-                review = post_review_form.save()
-                review.author = request.user
-                review.post = post
-                review.save()
-                return redirect("home")
-        else:
-            post_review_form = ReviewForm()
-        context = {"post_review_form": post_review_form, "post_review": post}
-        return render(request, "reviews/create_review_post.html", context=context)
+    def view_post_review(request, post_id):
+        post = get_object_or_404(PostReview, id=post_id)
+        review = get_object_or_404(PostReview, id=post_id)
+        return render(request, "reviews/view_review_post.html", {"post": post, "review": review})
 
 
 class ViewPost(View, LoginRequiredMixin):
@@ -132,7 +139,7 @@ class ViewFollowing(LoginRequiredMixin, View):
         return render(request, "reviews/follow_users.html", context=context)
 
     def display_followers(request):
-        """Affiche les utilisateurs suivis"""
+        """Affiche les utilisateurs suivis et les followers"""
         # Récupérer les utilisateurs que vous suivez
         followed_users = UsersFollowing.objects.filter(user=request.user)
 
@@ -170,8 +177,18 @@ class ViewHome(LoginRequiredMixin, View):
 
         followed = UsersFollowing.objects.filter(user=request.user)
         followed_users_ids = followed.values_list("followers_id", flat=True)
-        reviews = Review.objects.filter(author__in=followed_users_ids)
-        posts = Post.objects.all()
+
+        # affiche les reviews des personnes suivies uniquement
+        reviews = Review.objects.filter(
+            Q(author__in=followed_users_ids) | Q(author=request.user)
+        )
+
+        # affiche seulement les posts sans réponse
+        posts = Post.objects.exclude(
+            id__in=Subquery(
+                Review.objects.filter(post__id=OuterRef('id')).values('post_id')
+            )
+        )
         return render(
             request, "reviews/home.html", context={"reviews": reviews, "posts": posts}
         )

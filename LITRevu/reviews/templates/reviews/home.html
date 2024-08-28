@@ -18,7 +18,8 @@
         {% for post in posts %}
             <div>
                 <a href="{% url 'view_post' post.id %}">
-                    <h4>{{ post.title }}</h4>
+                    <h4>Demande de review  pour : {{ post.title }}</h4>
+                    <p>Demande créée par : {{ post.author }}</p>
                 </a>
             </div>
         {% endfor %}
