@@ -4,8 +4,7 @@
 
 <h2 class="reviews-title">Reviews des utilisateurs que vous suivez</h2>
 <div class="reviews">
-  
-  {% for review in page_obj %}
+  {% for review in review_page_obj %}
   <div class="review">
     <a href="{% url 'view_review' review.id %}">
       <img src="{{ review.photo.url }}">
@@ -15,28 +14,28 @@
     <p class="review-date">Date : {{ review.date_created|date:"d M Y" }}</p>
   </div>
   {% endfor %}
-  
-  {% if page_obj.has_other_pages %}
+
+  {% if review_page_obj.has_other_pages %}
     <span class="pagination">
-      {% if page_obj.has_previous %}
-        <a href="?page=1">Première page</a>
-        <a href="{% url 'home' %}?page={{ page_obj.previous_page_number }}">Précédente</a>
+      {% if review_page_obj.has_previous %}
+        <a href="?review_page=1">Première page</a>
+        <a href="?review_page={{ review_page_obj.previous_page_number }}">Précédente</a>
       {% endif %}
-      <span>Page {{ page_obj.number }} sur {{ page_obj.paginator.num_pages }}</span>
-      {% if page_obj.has_next %}
-        <a href="{% url 'home' %}?page={{ page_obj.next_page_number }}">Suivante</a>
-        <a href="{% url 'home' %}?page={{ page_obj.paginator.num_pages }}">Dernière page</a>
+      <span>Page {{ review_page_obj.number }} sur {{ review_page_obj.paginator.num_pages }}</span>
+      {% if review_page_obj.has_next %}
+        <a href="?review_page={{ review_page_obj.next_page_number }}">Suivante</a>
+        <a href="?review_page={{ review_page_obj.paginator.num_pages }}">Dernière page</a>
       {% endif %}
     </span>
   {% endif %}
-  {% if not page_obj %}
+  {% if not review_page_obj %}
     <p class="no-results">Aucun résultat trouvé sur cette page.</p>
   {% endif %}
 </div>
 
 <h2 class="posts-title">Toutes les demandes de review</h2>
 <ul class="posts">
-  {% for post in posts %}
+  {% for post in post_page_obj %}
     <li class="post">
       <a href="{% url 'view_post' post.id %}">
         <h4>Demande de review pour : {{ post.title }}</h4>
@@ -44,6 +43,20 @@
       <p>Demande créée par : {{ post.author }}</p>
     </li>
   {% endfor %}
-  </ul>
+</ul>
+
+{% if post_page_obj.has_other_pages %}
+  <span class="pagination">
+    {% if post_page_obj.has_previous %}
+      <a href="?post_page=1">Première page</a>
+      <a href="?post_page={{ post_page_obj.previous_page_number }}">Précédente</a>
+    {% endif %}
+    <span>Page {{ post_page_obj.number }} sur {{ post_page_obj.paginator.num_pages }}</span>
+    {% if post_page_obj.has_next %}
+      <a href="?post_page={{ post_page_obj.next_page_number }}">Suivante</a>
+      <a href="?post_page={{ post_page_obj.paginator.num_pages }}">Dernière page</a>
+    {% endif %}
+  </span>
+{% endif %}
 
 {% endblock content %}

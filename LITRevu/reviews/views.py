@@ -256,7 +256,7 @@ class ViewHome(LoginRequiredMixin, View):
 
         # Pagination pour les reviews
         review_paginator = Paginator(reviews, 6)
-        review_page_number = request.GET.get("page")
+        review_page_number = request.GET.get("review_page")
         review_page_obj = review_paginator.get_page(review_page_number)
 
         # Pagination pour les posts

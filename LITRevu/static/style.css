@@ -8,7 +8,7 @@
 :root {
     --cream_color: #f4ece4;
     --medium_color: #d9d3cf;
-    --brown_color: #9a7e6c;
+    --brown_color: #4d3d33;
     --font_general: "BASKVILL";
 }
 
@@ -110,7 +110,7 @@ h2 {
 
 .review .review-date {
     font-size: 0.8em;
-    color: #6f5e52;
+    color: var(--brown_color);
 }
 
 .review-detail {
@@ -277,7 +277,7 @@ h2 {
     max-width: 600px; /* Limite la largeur maximale à 600px */
     margin: 0 auto; /* Centre horizontalement */
     margin-left: calc(10% + 250px); /* Décale pour centrer par rapport à la section principale */
-    background-color: rgba(154, 126, 108, 0.8); /* Fond légèrement transparent */
+    background-color: var(--brown_color);
     color: white;
     text-align: center;
     padding: 15px;
@@ -309,6 +309,5 @@ h2 {
 }
 
 .messages .error {
-    background-color: #451503;
     font-size: x-large;
 }
