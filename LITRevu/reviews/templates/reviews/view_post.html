@@ -5,10 +5,10 @@
     <p>Demande faite par : {{ post.author }}</p>
 
     {% if post.author == user %}
-        <a href="{% url 'update_post' post.id %}">Modifier</a>
-        <a href="{% url 'delete_post' post.id %}">Supprimer</a>
+        <a href="{% url 'update_post' post.id %}" class="btn">Modifier</a>
+        <a href="{% url 'delete_post' post.id %}" class="btn">Supprimer</a>
     {% endif %}
-    <a href="{% url 'create_post_review' post.id %}">Répondre avec une review</a>
+    <a href="{% url 'create_post_review' post.id %}" class="btn">Répondre avec une review</a>
 
-    <p><a href="{% url 'home' %}">Accueil</a></p>
+    <p><a href="{% url 'home' %}" class="btn">Accueil</a></p>
 {% endblock content %}

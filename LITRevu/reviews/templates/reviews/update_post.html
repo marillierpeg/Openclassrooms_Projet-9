@@ -3,7 +3,7 @@
     <form method="post">
         {{ edit_post.as_p }}
         {% csrf_token %}
-        <button type="submit" >Publier</button>
+        <button type="submit" class="btn">Publier</button>
     </form>
-    <p><a href="{% url 'home' %}">Accueil</a></p>
+    <p><a href="{% url 'home' %}" class="btn">Accueil</a></p>
 {% endblock content %}

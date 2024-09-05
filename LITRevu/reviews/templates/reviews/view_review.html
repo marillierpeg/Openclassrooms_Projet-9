@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 {% block content %}
     <h2>{{ review.title }}</h2>
-    <img src="{{ review.photo.url }}">
-    <p>Avis :{{ review.description }}</p>
+    <img src="{{ review.photo.url }}" class="review-detail">
+    <p>Avis : {{ review.description }}</p>
     <p>Note : {{ review.rating }} /5</p>
     {% if review.author == user %}
-        <a href="{% url 'update_review' review.id %}">Modifier</a>
-        <a href="{% url 'delete_review' review.id %}">Supprimer</a>
+        <a href="{% url 'update_review' review.id %}" class="btn">Modifier</a>
+        <a href="{% url 'delete_review' review.id %}" class="btn">Supprimer</a>
     {% endif %}
-    <p><a href="{% url 'home' %}">Accueil</a></p>
+    <p><a href="{% url 'home' %}" class="btn">Accueil</a></p>
 {% endblock content %}

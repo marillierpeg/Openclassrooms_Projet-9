@@ -1,21 +1,25 @@
 {% extends 'base.html' %}
 {% block content %}
     <h1>Utilisateurs suivis</h1>
-    <ul>
+    <div class="grid-container">
         {% for followed_user in followed_users %}
-            <li>{{ followed_user.followers.username }}</li>
-            <form action="{% url 'unfollow_user' %}" method="POST">
-                {% csrf_token %}
-                <input type="hidden" name="followers_id" value="{{ followed_user.followers.id }}">
-                <input class="btn" type="submit" value="Ne plus suivre">
-            </form>
-            <form action="{% url 'block_users' %}" method="POST">
-                {% csrf_token %}
-                <input type="hidden" name="user_to_block_id" value="{{ followed_user.followers.id }}">
-                <input class="btn" type="submit" value="Bloquer">
-            </form>
+            <div class="grid-item">
+                <span>{{ followed_user.followers.username|capfirst }}</span>
+                <div class="button-group">
+                    <form action="{% url 'unfollow_user' %}" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="followers_id" value="{{ followed_user.followers.id }}">
+                        <input class="btn" type="submit" value="Ne plus suivre">
+                    </form>
+                    <form action="{% url 'block_users' %}" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="user_to_block_id" value="{{ followed_user.followers.id }}">
+                        <input class="btn" type="submit" value="Bloquer">
+                    </form>
+                </div>
+            </div>
         {% endfor %}
-    </ul>
+    </div>
 
     <h1>Mes abonnés</h1>
     <ul>
@@ -27,12 +31,18 @@
     <h1>Utilisateurs bloqués</h1>
     <ul>
         {% for blocked_user in blocked_users %}
-            <li>{{ blocked_user.followers.username }}</li>
-            <form action="{% url 'unblock_user' %}" method="POST">
-                {% csrf_token %}
-                <input type="hidden" name="user_to_unblock_id" value="{{ blocked_user.followers.id }}">
-                <input class="btn" type="submit" value="Débloquer">
-            </form>
+            <li>
+                <div class="user-actions">
+                    <span>{{ blocked_user.followers.username|capfirst }}</span>
+                    <div class="button-group">
+                        <form action="{% url 'unblock_user' %}" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="user_to_unblock_id" value="{{ blocked_user.followers.id }}">
+                            <input class="btn" type="submit" value="Débloquer">
+                        </form>
+                    </div>
+                </div>
+            </li>
         {% endfor %}
     </ul>
 {% endblock content %}

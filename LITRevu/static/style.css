@@ -12,6 +12,11 @@
     --font_general: "BASKVILL";
 }
 
+html {
+    font-family: var(--font_general);
+    background-color: var(--cream_color);
+}
+
 body a {
     color: var(--brown_color);
     text-decoration: none; /* Supprime la sous-ligne par défaut */
@@ -108,6 +113,14 @@ h2 {
     color: #6f5e52;
 }
 
+.review-detail {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 100%;
+    height: auto;
+}
+
 /* POSTS */
 .posts {
     list-style-type: none; /* Supprime les puces */
@@ -153,7 +166,7 @@ h2 {
     display:inline-block;
     cursor:pointer;
     color:black;
-    font-size:10px;
+    font-size:14px;
     font-weight:bold;
     padding:2px 6px;
     text-decoration:none;
@@ -169,22 +182,47 @@ h2 {
     top:1px;
 }
 
-html {
-    font-family: var(--font_general);
-    background-color: var(--cream_color);
+
+/* FOLLOW */
+
+/* Grille pour les utilisateurs suivis */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 colonnes de largeur égale */
+    gap: 20px; /* Espacement entre les éléments de la grille */
 }
+
+/* Style pour les éléments de la grille */
+.grid-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Alignement des éléments à gauche */
+}
+
+/* Conteneur pour les boutons */
+.button-group {
+    display: flex;
+    gap: 10px; /* Espacement entre les boutons */
+    margin-top: 5px; /* Espacement au-dessus des boutons */
+}
+
+/* Style pour les boutons */
+.btn {
+    margin: 0; /* Supprimer les marges par défaut */
+}
+
 
 /* SIDEBAR MENU */
 .sidebar {
-    height: 100%; /* Full-height: remove this if you want "auto" height */
-    width: 200px; /* Set the width of the sidebar */
-    position: fixed; /* Fixed Sidebar (stay in place on scroll) */
-    z-index: 1; /* Stay on top */
-    top: 0; /* Stay at the top */
+    height: 100%; 
+    width: 200px; 
+    position: fixed; /* Fixed Sidebar (immobile au scroll) */
+    z-index: 1; 
+    top: 0;
     left: 0;
     background-color: var(--brown_color);
     color:  var(--cream_color);
-    overflow-x: hidden; /* Disable horizontal scroll */
+    overflow-x: hidden;
     padding-top: 15px;
     padding-left: 10px;
     padding-right: 10px;
@@ -198,7 +236,21 @@ html {
     line-height: 0.5;
 }
 
+.sidebar h1 {
+    text-align: center;
+}
+
+.sidebar form {
+    text-align: center;
+}
+
+.sidebar form button {
+    margin: 0 auto;
+    display: block;
+}
+
 /* Survol Liens Sidebar */
+
 .sidebar a:hover {
     color: var(--brown_color); /* Changer la couleur du texte au survol */
     background-color: var(--cream_color); /* Changer le fond au survol pour un effet contrasté */

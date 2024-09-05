@@ -4,6 +4,6 @@
     <form method="post" enctype="multipart/form-data">
         {{ edit_review.as_p }}
         {% csrf_token %}
-        <button type="submit" >Publier</button>
+        <button type="submit" class="btn">Publier</button>
     </form>
 {% endblock content %}

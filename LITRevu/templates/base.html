@@ -16,7 +16,7 @@
         </div>
         <div class="sidebar">
             {% if user.is_authenticated %}
-                <h1>Salut, {{ user|capfirst }} !</h1>
+                <h1>Bonjour, <br> {{ user|capfirst }} !</h1>
                 {% if user.profile_photo %}
                     <img class="avatar" src={{ user.profile_photo.url }}>
                 {% else %}
