@@ -253,10 +253,22 @@ class ViewHome(LoginRequiredMixin, View):
                 Review.objects.filter(post__id=OuterRef("id")).values("post_id")
             )
         ).order_by("-date_created")
-        paginator = Paginator(reviews, 6)
-        page_number = request.GET.get("page")
-        page_obj = paginator.get_page(page_number)
+
+        # Pagination pour les reviews
+        review_paginator = Paginator(reviews, 6)
+        review_page_number = request.GET.get("page")
+        review_page_obj = review_paginator.get_page(review_page_number)
+
+        # Pagination pour les posts
+        post_paginator = Paginator(posts, 3)
+        post_page_number = request.GET.get("post_page")
+        post_page_obj = post_paginator.get_page(post_page_number)
 
         return render(
-            request, "reviews/home.html", context={"page_obj": page_obj, "posts": posts}
+            request,
+            "reviews/home.html",
+            context={
+                "review_page_obj": review_page_obj,
+                "post_page_obj": post_page_obj,
+            }
         )
