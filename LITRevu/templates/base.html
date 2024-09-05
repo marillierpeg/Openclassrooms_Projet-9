@@ -1,4 +1,5 @@
-<html>
+<!DOCTYPE html>
+<html lang="fr">
 {% load static %}
     <head>
         <title>LitRevu</title>
@@ -18,9 +19,9 @@
             {% if user.is_authenticated %}
                 <h1>Bonjour, <br> {{ user|capfirst }} !</h1>
                 {% if user.profile_photo %}
-                    <img class="avatar" src={{ user.profile_photo.url }}>
+                    <img class="avatar" src={{ user.profile_photo.url }}  alt="photo_profil">
                 {% else %}
-                    <img class="avatar" src="{% static 'pictures/default_profile.png'%}">
+                    <img class="avatar" src="{% static 'pictures/default_profile.png'%}"  alt="photo_profil">
                 {% endif %}
                 <p><a href="{% url 'home' %}">Mon accueil</a></p>
                 <h3>Mon compte</h3>

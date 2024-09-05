@@ -40,16 +40,15 @@ class Review(models.Model):
         super().save(*args, **kwargs)
         self.resize_image()
 
-    def checking_review(self, user):
-        return Review.objects.filter(author=user, post_id=self.post_id).exists()
-
 
 class PostReview(models.Model):
+
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     review = models.ForeignKey(Review, on_delete=models.CASCADE)
 
 
 class UsersFollowing(models.Model):
+
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="following")
     followers = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="followers")
     is_blocked = models.BooleanField(default=False)
