@@ -5,16 +5,18 @@
         <link rel="stylesheet" href="{% static 'style.css' %}">
     </head>
     <body>
-        {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
+        <div class="message-container">
+            {% if messages %}
+              <ul class="messages">
+                {% for message in messages %}
+                  <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+        </div>
         <div class="sidebar">
             {% if user.is_authenticated %}
-                <h1>Salut, {{ user }} !</h1>
+                <h1>Salut, {{ user|capfirst }} !</h1>
                 {% if user.profile_photo %}
                     <img class="avatar" src={{ user.profile_photo.url }}>
                 {% else %}
@@ -33,12 +35,13 @@
                 <h3></h3>
                 <form action="{% url 'logout' %}" method="post">
                     {% csrf_token %}
-                    <button id="btn" type="submit">Se déconnecter</button>
+                    <button class="btn" id="btn" type="submit">Se déconnecter</button>
                 </form>
             {% endif %}
         </div>
         <div class="main">
             {% block content %}{% endblock content %}
         </div>
+
     </body>
 </html>

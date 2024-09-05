@@ -7,7 +7,12 @@
             <form action="{% url 'unfollow_user' %}" method="POST">
                 {% csrf_token %}
                 <input type="hidden" name="followers_id" value="{{ followed_user.followers.id }}">
-                <input type="submit" value="Ne plus suivre">
+                <input class="btn" type="submit" value="Ne plus suivre">
+            </form>
+            <form action="{% url 'block_users' %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="user_to_block_id" value="{{ followed_user.followers.id }}">
+                <input class="btn" type="submit" value="Bloquer">
             </form>
         {% endfor %}
     </ul>
@@ -16,6 +21,18 @@
     <ul>
         {% for user_following in users_following %}
             <li>{{ user_following.user.username }}</li>
+        {% endfor %}
+    </ul>
+
+    <h1>Utilisateurs bloqués</h1>
+    <ul>
+        {% for blocked_user in blocked_users %}
+            <li>{{ blocked_user.followers.username }}</li>
+            <form action="{% url 'unblock_user' %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="user_to_unblock_id" value="{{ blocked_user.followers.id }}">
+                <input class="btn" type="submit" value="Débloquer">
+            </form>
         {% endfor %}
     </ul>
 {% endblock content %}

@@ -52,16 +52,10 @@ class PostReview(models.Model):
 class UsersFollowing(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="following")
     followers = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="followers")
+    is_blocked = models.BooleanField(default=False)
 
     class Meta:
         unique_together = ("user", "followers")
-
-    def unfollow(self):
-        self.delete()
-
-    @classmethod
-    def is_following(cls, user, follower):
-        return cls.objects.filter(user=user, follower=follower).exists()
 
     def __str__(self):
         f"{self.user} suit {self.followers}"

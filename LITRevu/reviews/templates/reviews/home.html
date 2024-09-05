@@ -1,27 +1,49 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-    <h2>Reviews des utilisateurs que vous suivez</h2>
-    <div>
-        {% for review in reviews %}
-            <div>
-                <a href="{% url 'view_review' review.id %}">
-                    <img src="{{ review.photo.url }}">
-                    <h4>Review de : {{ review.title }}</h4>
-                    <p>Créé par : {{ review.author }}</p>
-                </a>
-            </div>
-        {% endfor %}
-    </div>
-    <h2>Toutes les demandes de review</h2>
-    <div>
-        {% for post in posts %}
-            <div>
-                <a href="{% url 'view_post' post.id %}">
-                    <h4>Demande de review  pour : {{ post.title }}</h4>
-                    <p>Demande créée par : {{ post.author }}</p>
-                </a>
-            </div>
-        {% endfor %}
-    </div>
+
+<h2 class="reviews-title">Reviews des utilisateurs que vous suivez</h2>
+<div class="reviews">
+  
+  {% for review in page_obj %}
+  <div class="review">
+    <a href="{% url 'view_review' review.id %}">
+      <img src="{{ review.photo.url }}">
+      <h4>Review de : {{ review.title }}</h4>
+    </a>
+    <p>Créé par : {{ review.author }}</p>
+    <p class="review-date">Date : {{ review.date_created|date:"d M Y" }}</p>
+  </div>
+  {% endfor %}
+  
+  {% if page_obj.has_other_pages %}
+    <span class="pagination">
+      {% if page_obj.has_previous %}
+        <a href="?page=1">Première page</a>
+        <a href="{% url 'home' %}?page={{ page_obj.previous_page_number }}">Précédente</a>
+      {% endif %}
+      <span>Page {{ page_obj.number }} sur {{ page_obj.paginator.num_pages }}</span>
+      {% if page_obj.has_next %}
+        <a href="{% url 'home' %}?page={{ page_obj.next_page_number }}">Suivante</a>
+        <a href="{% url 'home' %}?page={{ page_obj.paginator.num_pages }}">Dernière page</a>
+      {% endif %}
+    </span>
+  {% endif %}
+  {% if not page_obj %}
+    <p class="no-results">Aucun résultat trouvé sur cette page.</p>
+  {% endif %}
+</div>
+
+<h2 class="posts-title">Toutes les demandes de review</h2>
+<ul class="posts">
+  {% for post in posts %}
+    <li class="post">
+      <a href="{% url 'view_post' post.id %}">
+        <h4>Demande de review pour : {{ post.title }}</h4>
+      </a>
+      <p>Demande créée par : {{ post.author }}</p>
+    </li>
+  {% endfor %}
+  </ul>
+
 {% endblock content %}

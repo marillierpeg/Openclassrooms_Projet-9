@@ -42,6 +42,8 @@ urlpatterns = [
     path("follow_users/", views.ViewFollowing.follow_users, name="follow_users"),
     path("followed_users/", views.ViewFollowing.display_followers, name="followed_users"),
     path("unfollow/", views.ViewUnfollow.as_view(), name="unfollow_user"),
+    path("block_users/", views.ViewBlockUser.as_view(), name="block_users"),
+    path("unblock_user/", views.ViewUnblockUser.as_view(), name="unblock_user"),
     path("home/", views.ViewHome.home, name="home"),
 ]
 if settings.DEBUG:

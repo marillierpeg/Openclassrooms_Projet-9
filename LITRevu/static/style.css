@@ -12,67 +12,23 @@
     --font_general: "BASKVILL";
 }
 
-.btn {
-    box-shadow: 0px 1px 0px 0px #1c1b18;
-	background:linear-gradient(to bottom, #eae0c2 5%, #ccc2a6 100%);
-	background-color:#eae0c2;
-	border-radius:15px;
-	border:2px solid #333029;
-	display:inline-block;
-	cursor:pointer;
-	color:#505739;
-	font-size:14px;
-	font-weight:bold;
-	padding:12px 16px;
-	text-decoration:none;
-	text-shadow:0px 1px 0px #ffffff;
+body a {
+    color: var(--brown_color);
+    text-decoration: none; /* Supprime la sous-ligne par défaut */
+    font-weight: bold; /* Optionnel, rend le texte plus visible */
 }
 
-.btn:hover {
-	background:linear-gradient(to bottom, #ccc2a6 5%, #eae0c2 100%);
-	background-color:#ccc2a6;
-}
-.btn:active {
-	position:relative;
-	top:1px;
+/* Survol des liens */
+body a:hover {
+    text-decoration: underline; /* Soulignement au survol */
 }
 
-html {
-    font-family: var(--font_general);
-    background-color: var(--cream_color);
-}
 
-/* The sidebar menu */
-.sidebar {
-    height: 100%; /* Full-height: remove this if you want "auto" height */
-    width: 200px; /* Set the width of the sidebar */
-    position: fixed; /* Fixed Sidebar (stay in place on scroll) */
-    z-index: 1; /* Stay on top */
-    top: 0; /* Stay at the top */
-    left: 0;
-    background-color: var(--brown_color);
-    color:  var(--cream_color);
-    overflow-x: hidden; /* Disable horizontal scroll */
-    padding-top: 15px;
-    padding-left: 10px;
-    padding-right: 10px;
-}
 
-/* The navigation menu links */
-.sidebar a {
-    text-decoration: none;
-    color: var(--cream_color);
-    display: block;
-}
-
-/* When you mouse over the navigation links, change their color */
-.sidebar a:hover {
-    color: var(--medium_color);
-}
 
 /* Style page content */
 .main {
-    margin-left: 200px; /* Same as the width of the sidebar */
+    margin-left: 200px; 
     padding: 20px;
 }
 
@@ -95,4 +51,212 @@ html {
 .post img {
     width: 80%;
     border-radius: 5px;
+}
+
+h2 {
+    font-family: var(--font_general); /* Utilisation de la police définie dans les variables */
+    font-size: 2em; /* Taille de police plus grande pour les titres */
+    color: var(--brown_color); /* Couleur principale pour les titres */
+    border-bottom: 2px solid var(--medium_color); /* Ligne sous le titre pour le souligner */
+    padding-bottom: 10px; /* Espacement sous le titre */
+    margin-bottom: 20px; /* Espacement en dessous du titre */
+    text-align: center; /* Centrer le titre */
+}
+
+/* REVIEWS */
+.reviews {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    justify-content: center;
+    align-items: start;
+    padding: 20px;
+}
+
+.review {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--medium_color);
+    border-radius: 10px;
+    padding: 10px;
+    height: 300px; /* Hauteur fixe pour uniformiser les cadres */
+    box-shadow: 0px 2px 4px rgba(0,0,0,0.2);
+    text-align: center;
+    overflow: hidden; /* Cache les débordements */
+}
+
+.review img {
+    width: 50%; /* Réduit la largeur des images à 50% */
+    border-radius: 10px;
+    display: block;
+    margin: 0 auto; /* Centre l'image à l'intérieur de la review */
+}
+
+.review h4 {
+    margin: 10px 0 5px 0;
+    font-size: 0.8em; /* Réduit la taille de la police pour le titre */
+}
+
+.review p {
+    margin: 5px 0;
+    font-size: 0.8em; /* Réduit la taille de la police pour les informations */
+}
+
+.review .review-date {
+    font-size: 0.8em;
+    color: #6f5e52;
+}
+
+/* POSTS */
+.posts {
+    list-style-type: none; /* Supprime les puces */
+    padding: 0; /* Supprime le padding par défaut */
+}
+
+.post {
+    margin-bottom: 20px; /* Espace entre les posts */
+    border-bottom: 1px solid var(--medium_color); /* Ligne de séparation entre les posts */
+    padding-bottom: 10px;
+}
+
+.post h4 {
+    font-size: 18px; /* Taille du titre */
+    margin-bottom: 5px; /* Espace entre le titre et le texte "Demande créée par" */
+}
+
+.post p {
+    font-size: 14px; /* Réduction de la taille du texte pour le créateur */
+    margin-left: 20px; /* Décalage à droite par rapport au titre */
+    color: var(--brown_color); /* Couleur pour correspondre à la palette */
+    font-style: italic; /* Optionnel, pour un style différent */
+}
+
+.post a {
+    text-decoration: none;
+    color: var(--brown_color); /* Couleur des liens pour correspondre à la palette */
+}
+
+.post a:hover {
+    text-decoration: underline; /* Soulignement au survol */
+}
+
+
+/* BOUTONS*/
+
+.btn {
+    box-shadow: 0px 1px 0px 0px #1c1b18;
+    background:linear-gradient(to bottom, #9a7e6c 5%, #d9d3cf 100%);
+    background-color:#d9d3cf;
+    border-radius:15px;
+    border:1px solid #333029;
+    display:inline-block;
+    cursor:pointer;
+    color:black;
+    font-size:10px;
+    font-weight:bold;
+    padding:2px 6px;
+    text-decoration:none;
+    text-shadow:0px 1px 0px #ffffff;
+}
+
+.btn:hover {
+    background:linear-gradient(to bottom, #d9d3cf 5%, #9a7e6c 100%);
+    background-color:#d9d3cf;
+}
+.btn:active {
+    position:relative;
+    top:1px;
+}
+
+html {
+    font-family: var(--font_general);
+    background-color: var(--cream_color);
+}
+
+/* SIDEBAR MENU */
+.sidebar {
+    height: 100%; /* Full-height: remove this if you want "auto" height */
+    width: 200px; /* Set the width of the sidebar */
+    position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+    z-index: 1; /* Stay on top */
+    top: 0; /* Stay at the top */
+    left: 0;
+    background-color: var(--brown_color);
+    color:  var(--cream_color);
+    overflow-x: hidden; /* Disable horizontal scroll */
+    padding-top: 15px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+/* Liens Sidebar */
+.sidebar a {
+    text-decoration: none;
+    color: var(--cream_color);
+    display: block;
+    line-height: 0.5;
+}
+
+/* Survol Liens Sidebar */
+.sidebar a:hover {
+    color: var(--brown_color); /* Changer la couleur du texte au survol */
+    background-color: var(--cream_color); /* Changer le fond au survol pour un effet contrasté */
+    line-height: 1;
+    cursor: pointer; /* Changer le curseur pour indiquer que c'est interactif */
+}
+
+.sidebar h3 {
+    font-family: var(--font_general); /* Utilisation de la même police que le reste du texte */
+    font-size: 1.5em; /* Taille de police plus grande pour une meilleure visibilité */
+    color: var(--cream_color); /* Couleur du texte des titres */
+    background-color: var(--brown_color); /* Fond pour les titres afin de les faire ressortir */
+    padding: 10px; /* Espacement autour du texte */
+    border-radius: 5px; /* Coins arrondis pour un effet de douceur */
+    margin-top: 20px; /* Espacement au-dessus des titres */
+    margin-bottom: 10px; /* Espacement en dessous des titres */
+    text-align: center; /* Centrer le texte des titres */
+}
+
+/* MESSAGES (ERREUR OU INFO) */
+
+.message-container {
+    width: 80%; /* Utilise 80% de la largeur de la section principale */
+    max-width: 600px; /* Limite la largeur maximale à 600px */
+    margin: 0 auto; /* Centre horizontalement */
+    margin-left: calc(10% + 250px); /* Décale pour centrer par rapport à la section principale */
+    background-color: rgba(154, 126, 108, 0.8); /* Fond légèrement transparent */
+    color: white;
+    text-align: center;
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1); /* Ajoute une ombre pour un effet visuel */
+    display: none; /* Cache le conteneur par défaut */
+}
+
+/* Affiche le conteneur uniquement s'il contient des éléments */
+.message-container:has(li) {
+    display: block;
+}
+
+.messages {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.messages li {
+    padding: 10px;
+    margin: 5px 0;
+}
+
+.messages .success {
+    font-size: x-large;
+}
+
+.messages .error {
+    background-color: #451503;
+    font-size: x-large;
 }
