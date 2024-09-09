@@ -6,6 +6,7 @@ from . import forms
 
 
 def signup_page(request):
+    """Vue qui gère la page de connexion d'un utilisateur"""
     form = forms.SignupForm()
     if request.method == 'POST':
         form = forms.SignupForm(request.POST)
@@ -19,6 +20,7 @@ def signup_page(request):
 
 @login_required
 def upload_profile_photo(request):
+    """Vue qui gère la page de chargement d'une photo de profil d'utilisateur"""
     form = forms.UploadProfilePhotoForm(instance=request.user)
     if request.method == 'POST':
         form = forms.UploadProfilePhotoForm(request.POST, request.FILES, instance=request.user)

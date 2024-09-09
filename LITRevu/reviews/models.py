@@ -48,7 +48,7 @@ class PostReview(models.Model):
 
 
 class UsersFollowing(models.Model):
-
+    """Modèle qui va représenter la relation entre les utilisateurs"""
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="following")
     followers = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="followers")
     is_blocked = models.BooleanField(default=False)

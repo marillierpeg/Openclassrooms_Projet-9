@@ -3,6 +3,7 @@ from django.db import models
 
 
 class User(AbstractUser):
+    """Modèle personnalisé pour la création d'utilisateurs, qui hérite de la classe AbstractUser de Django"""
     username = models.CharField("username", max_length=50, unique=True,  error_messages={
         'unique': ("Ce nom d'utilisateur est déjà attribué")
         }

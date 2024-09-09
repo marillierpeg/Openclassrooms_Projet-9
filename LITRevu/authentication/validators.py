@@ -2,6 +2,7 @@ from django.core.exceptions import ValidationError
 
 
 class CustomPasswordValidator():
+    """Gère les exigences de sécurité pour la création de mot de passe"""
 
     def __init__(self, min_length=1):
         self.min_length = min_length
