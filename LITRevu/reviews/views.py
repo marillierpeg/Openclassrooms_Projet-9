@@ -12,7 +12,7 @@ from django.core.paginator import Paginator
 
 
 class ViewReview(LoginRequiredMixin, View):
-
+    """Vue qui gère l'affichage, la modification et la suppression des reviews"""
     def review_and_photo_upload(request):
         review_form = ReviewForm()
         if request.method == "POST":
@@ -51,7 +51,7 @@ class ViewReview(LoginRequiredMixin, View):
 
 
 class ViewPostReview(LoginRequiredMixin, View):
-
+    """Vue qui gère la création et l'affichage de review en réponse à un post"""
     def create_review_from_post(request, post_id):
         post = get_object_or_404(Post, id=post_id)
         initial_data = {"post": post}
@@ -78,7 +78,7 @@ class ViewPostReview(LoginRequiredMixin, View):
 
 
 class ViewPost(LoginRequiredMixin, View):
-
+    """Vue qui gère l'affichage, la modification et la suppression des posts"""
     def post_upload(request):
         post_form = PostForm()
         if request.method == "POST":
@@ -115,9 +115,9 @@ class ViewPost(LoginRequiredMixin, View):
 
 
 class ViewFollowing(LoginRequiredMixin, View):
+    """Vue qui gère la relation de suivi entre utilisateurs"""
 
     def follow_users(request):
-        """ Gère le formulaire pour suivre de nouveaux utilisateurs."""
         form = FollowedUserForm(request.POST)
         followed_users = UsersFollowing.objects.filter(user=request.user)
         if form.is_valid():
@@ -152,6 +152,7 @@ class ViewFollowing(LoginRequiredMixin, View):
         # Récupérer les utilisateurs qui vous suivent
         users_following = UsersFollowing.objects.filter(followers=request.user)
 
+        # Récupérer les utilisateurs que vous avez bloqué
         blocked_users = UsersFollowing.objects.filter(user=request.user, is_blocked=True).select_related("followers")
 
         form = FollowedUserForm()
@@ -166,7 +167,7 @@ class ViewFollowing(LoginRequiredMixin, View):
 
 
 class ViewUnfollow(LoginRequiredMixin, View):
-
+    "Vue qui permet de mettre fin à une relation de suivi entre utilisateurs"
     def post(self, request):
         user_to_unfollow_id = request.POST.get("followers_id")
         try:
@@ -182,7 +183,7 @@ class ViewUnfollow(LoginRequiredMixin, View):
 
 
 class ViewBlockUser(LoginRequiredMixin, View):
-
+    "Vue qui permet de bloquer des utilisateurs"
     def post(self, request):
         user_to_block_id = request.POST.get("user_to_block_id")
         try:
@@ -214,7 +215,7 @@ class ViewBlockUser(LoginRequiredMixin, View):
 
 
 class ViewUnblockUser(LoginRequiredMixin, View):
-
+    "Vue qui permet de débloquer des utilisateurs"
     def post(self, request):
         user_to_unblock_id = request.POST.get("user_to_unblock_id")
         try:
@@ -236,9 +237,10 @@ class ViewUnblockUser(LoginRequiredMixin, View):
 
 
 class ViewHome(LoginRequiredMixin, View):
-
+    """Vue qui gère l'affichage du flux de la page d'accueil"""
     def home(request):
 
+        # Récupère les utilisateurs suivis qui ne sont pas bloqués
         followed = UsersFollowing.objects.filter(user=request.user, is_blocked=False)
         followed_users_ids = followed.values_list("followers_id", flat=True)
 
